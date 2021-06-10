@@ -3,7 +3,6 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('./config/connection');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const pkg = require('./package.json');
 
 const authRoutes = require('./routes/auth.routes');
@@ -44,12 +43,10 @@ app.set('pkg', pkg);
 
 // Middlewares
 app.options('*', cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Routes
 app.get('/', (req, res) => {
