@@ -9,7 +9,10 @@ const pkg = require('./package.json');
 const authRoutes = require('./routes/auth.routes');
 const postRoutes = require('./routes/post.routes');
 
-const whitelist = ['http://localhost:4200']
+const whitelist = [
+    'http://localhost',
+    'http://localhost:4200'
+]
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
