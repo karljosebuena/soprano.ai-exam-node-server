@@ -1,0 +1,27 @@
+{
+  "name": "simple-secure-node-server",
+  "version": "1.0.0",
+  "description": "Simple Secure REST Server with nodejs + expressjs + jwt  bcrypt + mongodb",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Karl Jose Buena",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "2.0.7"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "dotenv": "10.0.0",
+    "express": "4.17.1",
+    "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.21",
+    "mongoose": "5.12.13",
+    "morgan": "1.10.0",
+    "multer": "1.4.2"
+  }
+}
