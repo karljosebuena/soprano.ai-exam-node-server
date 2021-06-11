@@ -7,6 +7,8 @@ const pkg = require('./package.json');
 
 const authRoutes = require('./routes/auth.routes');
 const postRoutes = require('./routes/post.routes');
+const bodyParser = require('body-parser');
+const { json } = require('body-parser');
 
 const whitelist = [
     'http://localhost',
@@ -42,13 +44,21 @@ mongoose.connection.on('disconnected', function () {
 app.set('pkg', pkg);
 
 // Middlewares
+// for addressing preflight cors issue
 app.options('*', cors(corsOptions));
+// for securing requests (right now I only allow requests from localhost and localhost:4200)
 app.use(cors(corsOptions));
+// for handling logs output (dev argument gives concise output colored by response status for development use)
 app.use(morgan('dev'));
+// express.urlencoded replaces bodyParser used in earlier versions of express json.
+// This is used to tell express to recognize the incoming request object as strings or arrays.
+// And by setting extended option to false the URL-encoded data will be parsed with the querystring library.
 app.use(express.urlencoded({ extended: false }));
+// We are just telling express  to recognize the incoming Request Object as a JSON Object
 app.use(express.json());
 
 // Routes
+// Route just to give info about the server (details in package.json)
 app.get('/', (req, res) => {
     res.json({
         author: app.get('pkg').author,
@@ -57,10 +67,15 @@ app.get('/', (req, res) => {
         version: app.get('pkg').version
     })
 });
+// Route mapped to endpoints signup and login
+// We don't need to make this authenticated (we don't have the token yet)
 app.use('/api/auth', authRoutes);
-// protected route
+// Route mapped to endpoints for posts CRUD
+// Each endpoints for posts are secured via middleware authToken.verifyToken
+// where it checks is login has the required token and is NOT expired
 app.use('/api/posts', postRoutes);
 
+// Just telling express to listen requests coming from port 3000 (this is what we specify in .env file)
 app.listen(process.env.SEVER_PORT, () => {
     console.log(`Server running on port: ${process.env.SEVER_PORT}`)
 });
